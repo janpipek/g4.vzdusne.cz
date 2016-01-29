@@ -252,3 +252,9 @@ div.content h2:hover a.section-link:hover {
   border-radius: 0px;
   margin: 5px;
 }
+
+img
+{
+  display: block;
+  margin: 10px auto;
+}
