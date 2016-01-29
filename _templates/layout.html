@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset=utf-8>
+  {% block htmlhead %}
+    <title>{% block title %}Home{% endblock %} | XXX</title>
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+    <link rel="stylesheet" href="/static/_pygments.css" type="text/css">
+    {%- for link in links %}
+    <link rel="{{ link.rel }}" href="{{ link.href }}"{%
+      if link.media %} media="{{ link.media }}"{% endif %} type="{{ link.type }}">
+    {%- endfor %}
+  {% endblock %}
+  </head>
+  <body>
+    <div id="container">
+      <div class=header>
+        <div class="blogtitle">Geant4 blog</div>
+        <ul class=navigation>
+          <li><a href="/">home</a>
+          <li><a href="/archive/">archive</a>
+          <li><a href="/tags/">tags</a>
+        </ul>
+      </div>
+
+      <div class="content">
+        {% block body %}{% endblock %}
+      </div>
+      <div class=footer>
+      </div>
+    </div>
+  </body>
+</html>

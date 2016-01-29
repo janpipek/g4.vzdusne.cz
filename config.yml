@@ -1,0 +1,10 @@
+---
+active_modules: [pygments, tags, blog, latex]
+author: Jan Pipek
+canonical_url: http://g4.vzdusne.cz
+modules:
+  pygments:
+    style: murphy
+feed:
+  name: Jan's Geant4 Blog
+  subtitle: Some ideas about Geant4 and other aspects of scientific software
