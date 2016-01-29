@@ -32,7 +32,7 @@ of the application as possible, a single part of the geometry.
 
 The whole design then follows these guidelines:
 
-* All components must derive from a common class, `GeometryComponent`, that
+* All components must derive from a common class, `DetectorComponent`, that
 contains shared functionality (which is not very wide).
 
 * The mechanism for combining components should be implemented
@@ -44,31 +44,33 @@ in whatever application without a change.
 each component should be just instantiated and perhaps positioned
 (both in one place).
 
-...UML diagram
+See a UML diagram:
 
-## The GeometryComponent class
+![uml](diagram.png "Simplified UML diagram")
+
+## The DetectorComponent class
 
 What should a component do? In a way, it is a mini-detector construction in itself.
 So, we should definitely define `Construct` and `ConstructSDandField` methods for it.
 Following the detector construction, `Construct` is pure virtual (abstract) and you have
 to override it, `ConstructSDandField` has a default (trivial) implementation.
 
-Be aware, that the signature of `Construct` is different from detector construction!
-The component won't be able for creating its physical volume and therefore
-it returns a logical volume instead of physical volume.
+Be aware that the signature of `Construct` is different from detector construction!
+The component won't be responsible for creating its physical volume and therefore
+it returns a logical volume instead of a physical one.
 
-We will just keep the name, position (and potentially rotation,
-which we won't deal with for simplicity) as data members (with setters and getters).
+We will just keep the *name*, *position* (and potentially *rotation*,
+which we won't deal with for simplicity) as data members (with setters and getters). In addition, we will also implement a simple mechanism for fast *enabling* and *disabling* of the component.
 
 This leaves the class definition (not split into header+source files) quite simple:
 
 ```c++
-class GeometryComponent
+class DetectorComponent
 {
 public:
-    GeometryComponent(G4String& name)
+    DetectorComponent(G4String& name)
         : fName(name), fEnabled(true), fPosition({0.0, 0.0, 0.0}) { }
-    virtual ~GeometryComponent() = default;
+    virtual ~DetectorComponent() = default;
 
     virtual G4LogicalVolume* Construct() = 0;    // overriding compulsary
     virtual void ConstructSDandField() { }       // default implementation
@@ -79,6 +81,8 @@ public:
     void SetPosition(const G4ThreeVector& pos) { fPosition = pos; }
 
     G4bool IsEnabled() const { return fEnabled; }
+    
+    // Note that once the detector is constructed, this has no effect!
     void SetEnabled(G4bool enabled) { fEnabled = enabled; }
 
 private:
@@ -89,19 +93,19 @@ private:
 ```
 
 For simplicity, I don't define a *messenger* for the class (it is a trivial step)
-or deal with the possibility of a component becoming a *sub-component* of another volume
+or deal with the possibility of a component becoming *sub-component* of another volume
 (this is also possible but I do not want to complicated this text too much). Nor
 do I add the above mentioned *rotation* which can be handled in a way similar to
 position (there is a couple of caveats though).
 
-## The CompositeGeometry class
+## The CompositeDetectorConstruction class
 
 This class is meant to be abstract although
 
 (please, forgive my C++11)
 
 ```c++
-class CompositeGeometry : public G4VUserDetectorConstruction
+class CompositeDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
     G4VPhysicalVolume* Construct() override
@@ -132,14 +136,16 @@ public:
         }
     }
 
-    AddComponent(GeometryComponent* component)
+    AddComponent(DetectorComponent* component)
     {
         fComponents.push_back(component);
     }
+protected:
+    G4VPhysicalVolume* ConstructWorldVolume() = 0;
 
 private:
     G4VPhysicalVolume* fPhysicalWorld;
-    std::vector<GeometryComponent*> fComponents;
+    std::vector<DetectorComponent*> fComponents;
 }
 ```
 
@@ -149,29 +155,27 @@ Now we have the two basic universal ingredients ready and we can use them
 to put together real components. Without
 
 ```c++
-class Component1 : public GeometryComponent
+class Component1 : public DetectorComponent
 {
 public:
-    const Component1() : GeometryComponent("component1") { }
+    const Component1() : DetectorComponent("component1") { }
 
     G4LogicalVolume* Construct() {
         ...     // Add some real code here
     }
 }
 
-class Component2 : public GeometryComponent
+class Component2 : public DetectorComponent
 {
-    ...
-
-    // Define this component in a similar way
+    ... // Define this component in a similar way
 }
 ```
 
 ```c++
-class ExampleGeometry : public CompositeGeometry
+class MyGeometry : public CompositeDetectorConstruction
 {
 public:
-    ExampleGeometry()
+    MyGeometry()
     {
         auto component1 = new Component1();
         component1->SetPosition({1.0 * m, 1.0 * m, 0.0});
@@ -181,18 +185,34 @@ public:
         component2->SetPosition({0.0, 0.0, 0.0})     // i.e. keep the default
         AddComponent(component2);
     }
+
+    G4VPhysicalVolume* ConstructWorldVolume()
+    {
+        ... // Implement
+    }
 }
 ```
 
 ## Drawbacks
 
-* parallel worlds
-* multiple copies of a component
-* deletion
+Naturally, there a few drawbacks. I did not include the full implementation 
+of the classes as my intention was to show the design principle, not to 
+provide full library (which we use in our model). Perhaps, in a later post,
+I will enhance the `DetectorComponent class` and describe further details.
 
-## Conclusion
+Among other details, I did not deal with:
 
-Perhaps, in a later post, I will enhance the `GeometryComponent class`.
+* **rotations**
+
+* **parallel worlds**
+
+* **hierarchical of components**
+
+* **multiple copies of a single component**
+
+* **component disposal** 
+
+* **Geant4 state machine checks**
 
 ## Disclaimer
 
