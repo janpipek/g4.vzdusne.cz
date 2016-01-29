@@ -1,8 +1,9 @@
 @charset "utf-8";
-/* @import url(//fonts.googleapis.com/css?family=Merriweather:400); */
+@import url(//fonts.googleapis.com/css?family=Merriweather:400); 
+@import url(//fonts.googleapis.com/css?family=Inconsolata); 
 
 body {
-  font-family: Georgia, serif;
+  font-family: Merriweather, Georgia, serif;
   color: #222;
 }
 
@@ -137,10 +138,19 @@ div.footer div.flattr {
   margin: 1.8ex 0;
 }
 
-.literal-block-wrapper, .literal-block-wrapper pre {
-  line-height: normal;
+.literal-block-wrapper, .literal-block-wrapper pre, pre {
+  /* line-height: normal; */
   font-size: 13px;
-  font-family: "Source Code Pro", "Consolas", "Deja Vu Sans Mono", "Bitstream Vera Sans Mono", "Monaco", "Courier New", "monospace";
+}
+
+.literal-block-wrapper, .literal-block-wrapper pre, pre, p code
+{
+font-family: "Inconsolata", "Source Code Pro", "Consolas", "Deja Vu Sans Mono", "Bitstream Vera Sans Mono", "Monaco", "Courier New", "monospace";
+}
+
+p code
+{
+  color: #888;
 }
 
 .literal-block-wrapper .caption, .hlltable, .hll {
@@ -236,8 +246,8 @@ div.content h2:hover a.section-link:hover {
 .hll
 {
   font-size: 80%;
-  line-height: 1.3em;
-  border: 1px solid #ccc;
+  line-height: 1.5em;
+  /* border: 1px solid #ccc; */
   padding: 5px;
   border-radius: 0px;
   margin: 5px;
