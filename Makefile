@@ -10,5 +10,4 @@ serve:
 	run-rstblog serve
 
 upload:
-	csync -a _build/ sftp://vzdusne.cz:/g4
-	@echo "Done..."
+	@echo "upload not working yet :-("
