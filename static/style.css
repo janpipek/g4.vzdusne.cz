@@ -67,8 +67,8 @@ ul.tagcloud > li {
   display: inline;
   margin-right: 1em;
   padding: 5px 5px 3px 5px;
-  border: thin solid gray;
-  border-radius: 6px;
+  background-color: #dddddd;
+  border-radius: 0px;
 }
 
 div.content {
