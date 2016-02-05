@@ -251,6 +251,7 @@ div.content h2:hover a.section-link:hover {
   padding: 5px;
   border-radius: 0px;
   margin: 5px;
+  overflow-x: scroll;
 }
 
 img
@@ -263,4 +264,16 @@ img
 {
     font-size: 110%;
     font-style: italic;
+}
+
+.article-summary p em
+{
+    font-style: normal;
+}
+
+p
+{
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
 }
