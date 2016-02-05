@@ -2,7 +2,8 @@ Title: Geant4 detector construction from independent components
 Tags: geometry
     geant4
     composite
-Summary: In this post, I describe how to divide detector construction    into several components and introduce the necessary classes to support this.
+Summary: How to divide detector construction into several independent parts? Let's
+    separate it into "geometry components" and construct a "composite geometry".
 
 In Geant4, you are supposed to develop a single class responsible
 for the whole detector construction (a.k.a. geometry); it has to inherit from
@@ -51,7 +52,7 @@ manager as usual.
 
 See a UML diagram:
 
-![uml](diagram.png "Simplified UML diagram")
+![uml](diagram.png "Simplified UML diagram
 
 ## The DetectorComponent class
 
@@ -86,7 +87,7 @@ public:
     void SetPosition(const G4ThreeVector& pos) { fPosition = pos; }
 
     G4bool IsEnabled() const { return fEnabled; }
-    
+
     // Note that once the detector is constructed, this has no effect!
     void SetEnabled(G4bool enabled) { fEnabled = enabled; }
 
@@ -172,7 +173,7 @@ private:
 Now we have the two basic universal ingredients ready and
 we can use them to put together real components.
 We create a composite detector construction class - let's call it `MyGeometry` - and two
-component classes - named `Component1` and `Component2` for 
+component classes - named `Component1` and `Component2` for
 simplicity.
 
 I won't add any detailed code, just the basic idea:
@@ -226,11 +227,11 @@ your own applications.
 
 ## P.S. What is missing?
 
-Naturally, there are a few issues that I did not discuss in this post - be 
+Naturally, there are a few issues that I did not discuss in this post - be
 it on purpose or because of my ignorance. The full implementation of both
-fundamental classes is very simple and contains only the necessary 
+fundamental classes is very simple and contains only the necessary
 functionality because my intention was to show the design principle,
-not to provide a full library. Some of the issues that may show up are 
+not to provide a full library. Some of the issues that may show up are
 easy to deal with, some less so.
 
 Among other details, I did not deal with:
@@ -259,4 +260,3 @@ and take care of the "forgotten issues".
 This post is based on the work I have done for the ELIMED project
 (closed-source) and also on my library g4application (open-source, see <https://github.com/janpipek/g4application>) -
 both projects employ a variant of the presented concept.
-
