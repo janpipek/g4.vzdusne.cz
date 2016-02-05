@@ -3,11 +3,11 @@ all: build upload
 clean:
 	rm -rf _build
 
-build:
-	run-rstblog build
+build: clean
+	run-blogdown build
 
-serve:
-	run-rstblog serve
+serve: build
+	run-blogdown serve
 
 upload:
 	@echo "upload not working yet :-("
