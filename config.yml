@@ -1,10 +1,12 @@
 ---
-active_modules: [pygments, tags, blog, latex]
+active_modules: [pygments, tags, blog, latex, disqus]
 author: Jan Pipek
 canonical_url: http://g4.vzdusne.cz
 modules:
   pygments:
     style: fruity
+  disqus:
+    shortname: geant4mbare
 feed:
   name: Jan's Geant4 Blog
   subtitle: Some ideas about Geant4 and other aspects of scientific software
