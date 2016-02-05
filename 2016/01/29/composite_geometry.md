@@ -52,7 +52,7 @@ manager as usual.
 
 See a UML diagram:
 
-![uml](diagram.png "Simplified UML diagram
+![uml](diagram.png "Simplified UML diagram")
 
 ## The DetectorComponent class
 

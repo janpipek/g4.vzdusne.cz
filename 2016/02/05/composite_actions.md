@@ -262,12 +262,12 @@ just by doing so.
 However, to make the separation complete, I propose another layer of abstraction
 consisting of "action components" that package related user actions together
 and keep the non-related actions as separate as possible. This will become a topic
-of future blog post.
+of a future blog post.
 
 ## Random notes
 
 * Recently, I found that it is possible to assign a "regional" `G4UserSteppingAction`
-to a specific `G4Region` using the "SetRegionalSteppingAction". However, I have
+to a specific `G4Region` using the `SetRegionalSteppingAction` method. However, I have
 not yet found any proper documentation for it.
 
 * Because the composite alternative of an action class inherits from its item class,
