@@ -45,6 +45,12 @@ There must be some kind of interface to pass all necessary action classes...
 
 Unfortunately, impossible in separate methods
 
+No object outside the component directly knows about the action - therefore
+all important parameters should be kept in the component and actions rather
+lightweight <-- change this
+
+
+
 ## What about the 
 
 l'... 
@@ -53,27 +59,29 @@ l'...
 
 ## Example: event monitoring
 
-One of the typical user actions developers usually want to include in their
-Geant4 application
+One of the typical functionalities developers usually want to include in their
+Geant4 application, is the ability to track the simulation progress, e.g. by
+printing from time to time (with user-specified frequency) the number of event
+currently being processed. This calls for a simple `G4UserEventAction`. If we want to package it in
+an action component, let's do it like this:
 
-
-```
+```c++
 class EventMonitoringEventAction : public G4UserEventAction
 {
 public:
-    EventMonitoringEventAction(const EventMonitoring& monitoring) : fMonitoring(monitoring) { }
+    EventMonitoringEventAction(const EventMonitoringComponent& component) : fComponent(component) { }
 
     void BeginOfEventAction(const G4Event* anEvent) override {
-        if (anEvent->GetEventID() % fMonitoring.GetFrequency() == 0) {
+        if (anEvent->GetEventID() % fComponent.GetFrequency() == 0) {
             G4cout << "Event #" << anEvent->GetEventID() << " started." << G4endl;
         }
     }
 
 private:
-    const EventMonitoring& fMonitoring;
+    const EventMonitoringComponent& fComponent;
 };
 
-class EventMonitoring : public ActionComponent
+class EventMonitoringComponent : public ActionComponent
 {
 public:
     ActionSet Build() const override {
@@ -90,6 +98,19 @@ private:
     G4int fFrequency;
 };
 
+```
+
+Then in our action initialization, we just create an instance of the component
+and perhaps set the frequency (which will be stored in the component, not the action):
+
+```c++
+OurActionInitialization::OurActionInitialization() {
+    auto eventMonitoring = new EventMonitoringComponent();
+    eventMonitoring->SetFrequency(100);
+    AddComponent(eventMonitoring);
+
+    // Add other components
+}
 ```
 
 
