@@ -27,7 +27,7 @@ Or, better, you can use some (more or less sophisticated) way to keep the behavi
 and at the same time satisfy Geant4's requirement to have just one instance of each
 action type.
 
-Here, I generalize the second approach in a way that allows to really have multiple
+Here, I generalize the second approach in a way that allows you to really have multiple
 action classes of each type in your application without them being aware that they are not treated
 as a single privileged object. This abstraction involves a **composite action** class
 that serves as a dispatcher for a set of different **sub-actions**. Though the concept is
@@ -43,13 +43,13 @@ A picture at the beginning (hopefully) shows what class hierarchy we want to bui
 We begin with defining an abstract (and templated) class called `CompositeAction` that
 will serve as the base class for the five composite classes that are our ultimate goal.
 If you look at its definition, it's little more than a simple container that inherits
-from its own item type. The last point is very important -- it allows to use this container
+from its own item type. The last point is very important -- it enables you to treat the container
 as if it were a single instance of the base class (which is what `G4RunManager` wants).
 
 *Note: There is no destructor to delete the action objects. This
 would come handy in most cases but would pose problems in cases where object
 ownership is more complex (one way out of this is to consistently use smart pointers
-which is a topic far beyond the scope of this document). Therefore, we let user
+which is a topic far beyond the scope of this document). Therefore, we let the user
 deal with memory management (e.g. by letting all object die when the application
 is ended; usually the resulting memory leak is not a big deal.)*
 
@@ -208,7 +208,7 @@ Using approach already employed in the previous case, we will not let two
 different sub-actions return a customized `G4Run` object (which of them would be
 the correct one?). If just one sub-action does that, we happily return it.
 Otherwise we return (as is the default) `nullptr`. Personally, I don't recommend
-to implement `GenerateRun` in sub-actions (you'd better do that in your
+to implement `GenerateRun` in sub-actions (you would be better to do that in your
 custom CompositeRunAction).
 
 * The run action has an `IsMaster` method. It is useful in multi-threaded regime

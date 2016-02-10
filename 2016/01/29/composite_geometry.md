@@ -102,7 +102,7 @@ For simplicity, I don't define a *messenger* for the class (it is a trivial step
 or deal with the possibility of a component becoming *sub-component* of another volume
 (this is also possible but I do not want to complicated this text too much). Nor
 do I add the above mentioned *rotation* which can be handled in a way similar to
-position (there is a couple of caveats though).
+position (there are a couple of caveats though).
 
 ## The CompositeDetectorConstruction class
 
