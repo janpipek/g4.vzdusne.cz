@@ -4,7 +4,7 @@ Tags: geant4
     user actions
 Summary: How is it possible to use two (or more) different
     user action classes of the same type (e.g. `G4UserSteppingAction`)
-    despite the fact that Geant4 allows to register just one object
+    despite the fact that Geant4 allows you to register just one object
     of each type? The answer is the concept of a "composite action".
 
 In any reasonable Geant4 application, you will need to implement one or more
